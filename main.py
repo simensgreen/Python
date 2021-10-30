@@ -32,7 +32,7 @@ class Vector:
 class Path:
     points: list[Vector] = field(default_factory=list)
 
-    def kpd(self, required_indexes: list[int] = list):
+    def kpd(self, required_indexes: list[int] = []):
         return self.minimal_distance(required_indexes) \
                / self.current_distance()
 
@@ -42,7 +42,7 @@ class Path:
             length += (self.points[i + 1] - self.points[i]).length()
         return length
 
-    def minimal_distance(self, required_indexes: list[int] = list) -> float:
+    def minimal_distance(self, required_indexes: list[int] = []) -> float:
         new_points, length = [self.points[0], self.points[-1]], 0.0
         for index, i in enumerate(required_indexes):
             new_points.insert(index + 1, self.points[i])
@@ -61,4 +61,4 @@ if __name__ == '__main__':
                  Vector(0, 1),
                  Vector(1, 1),
                  Vector(1, 0)])
-    print(path.kpd([1]))
+    print(path.kpd())
