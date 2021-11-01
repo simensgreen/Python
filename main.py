@@ -34,13 +34,15 @@ class Path:
         return self.minimal_distance(required_indexes) / self.current_distance()
 
     def current_distance(self) -> float:
-        return sum(abs(self.points[i + 1] - self.points[i]) / self.time_between_points[i] for i in range(len(self.points) - 1))
+        return sum(abs(self.points[i + 1] - self.points[i]) / self.time_between_points[i]
+                   for i in range(len(self.points) - 1))
 
     def minimal_distance(self, required_indexes: list[int] = []) -> float:
         new_points = [self.points[0], self.points[-1]]
         for index, i in enumerate(required_indexes):
             new_points.insert(index + 1, self.points[i])
-        return sum(abs(new_points[i + 1] - new_points[i]) / self.time_between_points[i] for i in range(len(new_points) - 1))
+        return sum(abs(new_points[i + 1] - new_points[i]) / self.time_between_points[i]
+                   for i in range(len(new_points) - 1))
 
 
 @dataclass
