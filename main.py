@@ -10,22 +10,19 @@ class Vector:
         return f"Vector({self.x}, {self.y})"
 
     def __mul__(self, multiplier: float):
-        x = self.x * multiplier
-        y = self.y * multiplier
-        return Vector(x, y)
+        return Vector(self.x * multiplier, self.y * multiplier)
 
     def __add__(self, vector):
-        x = self.x + vector.x
-        y = self.y + vector.y
-        return Vector(x, y)
+        return Vector(self.x + vector.x, self.y + vector.y)
 
     def __sub__(self, vector):
-        x = self.x - vector.x
-        y = self.y - vector.y
-        return Vector(x, y)
+        return Vector(self.x - vector.x, self.y - vector.y)
 
     def length(self):
         return (self.x ** 2 + self.y ** 2) ** .5
+
+    def __abs__(self):
+        return self.length()
 
 
 @dataclass
@@ -33,22 +30,16 @@ class Path:
     points: list[Vector] = field(default_factory=list)
 
     def kpd(self, required_indexes: list[int] = []):
-        return self.minimal_distance(required_indexes) \
-               / self.current_distance()
+        return self.minimal_distance(required_indexes) / self.current_distance()
 
     def current_distance(self) -> float:
-        length = 0.0
-        for i in range(len(self.points) - 1):
-            length += (self.points[i + 1] - self.points[i]).length()
-        return length
+        return sum(map(abs, (self.points[i + 1] - self.points[i] for i in range(len(self.points) - 1))))
 
     def minimal_distance(self, required_indexes: list[int] = []) -> float:
-        new_points, length = [self.points[0], self.points[-1]], 0.0
+        new_points = [self.points[0], self.points[-1]]
         for index, i in enumerate(required_indexes):
             new_points.insert(index + 1, self.points[i])
-        for i in range(len(new_points) - 1):
-            length += (new_points[i + 1] - new_points[i]).length()
-        return length
+        return sum(map(abs, (new_points[i + 1] - new_points[i] for i in range(len(new_points) - 1))))
 
 
 @dataclass
