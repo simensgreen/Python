@@ -30,14 +30,16 @@ class Path:
     points: list[Vector] = field(default_factory=list)
     time_between_points: list[float] = field(default_factory=list)
 
-    def kpd(self, required_indexes: list[int] = []):
+    def kpd(self, required_indexes: list[int] = None):
+        required_indexes = [] if required_indexes is None else required_indexes
         return self.minimal_distance(required_indexes) / self.current_distance()
 
     def current_distance(self) -> float:
         return sum(abs(self.points[i + 1] - self.points[i]) / self.time_between_points[i]
                    for i in range(len(self.points) - 1))
 
-    def minimal_distance(self, required_indexes: list[int] = []) -> float:
+    def minimal_distance(self, required_indexes: list[int] = None) -> float:
+        required_indexes = [] if required_indexes is None else required_indexes
         new_points = [self.points[0], self.points[-1]]
         for index, i in enumerate(required_indexes):
             new_points.insert(index + 1, self.points[i])
